@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#include<math.h>
+#include<time.h>
+int main()
+{
+int wt=0,at[10],bt[10],remaining_time[10],number,turn_around_time=0;
+int i,n,time,remaining,flag=0,process_time=10;
+printf("\n\nEnter the number of Process that need to be processed:\t");
+scanf("%d",&n);
+remaining=n;
+for(number=0;number<n;number++)
+{
+printf("For Process Number %d enter Arrival Time and Burst Time :",number+1);
+scanf("%d",&at[number]);
+scanf("%d",&bt[number]);
+remaining_time[number]=bt[number];
+}
+printf("Enter Time Quantum:%d\t",process_time);
+printf("\n\nProcess\t|Turnaround Time|WaitingTime\n");
+printf("____________________________________\n");
+for(time=0,number=0;remaining!=0;)
+{
+if(remaining_time[number]<=process_time && remaining_time[number]>0)
+{
+time+=remaining_time[number];
+remaining_time[number]=0;
+flag=1;
+}
+else if(remaining_time[number]>0)
+{
+remaining_time[number]-=process_time;
+time+=process_time;
+}
+if(remaining_time[number]==0 && flag==1)
+{
+remaining--;
+printf("P[%d]\t|\t%d\t|\t%d\n",number+1,time-at[number],time-at[number]-bt[number]);
+wt+=time-at[number]-bt[number];
+turn_around_time+=time-at[number];
+flag=0;
+}
+if(number==n-1)
+number=0;
+else if(at[number+1]<=time)
+number++;
+else
+number=0;
+}
+printf("\nAverage Waiting Time=%f\n",wt*1.0/n);
+printf("Avg Turnaround Time =%f",turn_around_time*1.0/n);
+return 0;
+}
